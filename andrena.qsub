@@ -1,0 +1,35 @@
+#!/bin/bash
+#$ -l h_rt=00:45:00
+#$ -l h_vmem=7.5G
+#$ -pe smp 12
+#$ -l gpu=1
+#$ -l gpu_type=ampere
+#$ -j y
+#$ -m ea
+#$ -o logs/
+#$ -l cluster=andrena
+#$ -wd /data/home/eey362/code/mamba-hpc/
+
+# Sort modules out
+ml purge
+ml load anaconda3 cuda
+
+# Create environment
+mamba create --name ssm python=3.10 -y
+mamba activate ssm
+
+# Upgrade pip
+python3 -m pip install --upgrade pip
+python3 -m pip install -U setuptools
+
+
+# PyTorch
+python3 -m pip install torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 --index-url https://download.pytorch.org/whl/cu118
+python3 -c 'import torch; print(torch.__version__); print(torch.tensor([1,2,3]).cuda())'
+
+# Mamba
+python3 -m pip install causal-conv1d==1.4.0
+python3 -m pip install git+https://github.com/state-spaces/mamba
+
+python3 test.py
+
