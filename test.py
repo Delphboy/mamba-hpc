@@ -15,3 +15,4 @@ if __name__ == "__main__":
     ).to("cuda")
     y = model(x)
     assert y.shape == x.shape
+    print(x, "-->", y)

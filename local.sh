@@ -2,7 +2,7 @@
 
 # Create environment
 conda create --name mamba python=3.10 -y
-conda activate test
+conda activate mamba
 
 # Upgrade pip
 python3 -m pip install --upgrade pip
